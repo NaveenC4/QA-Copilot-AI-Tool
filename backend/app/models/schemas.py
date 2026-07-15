@@ -7,6 +7,21 @@ class TicketRequest(BaseModel):
     acceptance_criteria: Optional[str] = Field(default='', description='Acceptance criteria')
     domain: Optional[str] = Field(default='General', description='Business domain')
 
+
+class AskAiRequest(BaseModel):
+    question: str = Field(..., min_length=1, description='Question to ask AI')
+    asked_count: int = Field(..., ge=1, le=5, description='1-based number of the current question attempt')
+    title: Optional[str] = Field(default='', description='Jira ticket title')
+    story: Optional[str] = Field(default='', description='User story or requirement')
+    acceptance_criteria: Optional[str] = Field(default='', description='Acceptance criteria')
+    domain: Optional[str] = Field(default='General', description='Business domain')
+
+
+class AskAiResponse(BaseModel):
+    answer: str
+    asked_count: int = Field(..., ge=1, le=5)
+    remaining_questions: int = Field(..., ge=0, le=4)
+
 class TestCase(BaseModel):
     id: str
     title: str

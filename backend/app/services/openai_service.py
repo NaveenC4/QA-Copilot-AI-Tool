@@ -25,6 +25,46 @@ def _serialize_package(package: QaPackage) -> str:
     return package.json(indent=2)
 
 
+def ask_with_openai(question: str, title: str, story: str, acceptance_criteria: str, domain: str) -> str:
+    api_key = os.getenv('OPENAI_API_KEY', '')
+    model = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+    base_url = os.getenv('OPENAI_BASE_URL', 'https://api.openai.com/v1').rstrip('/')
+    if not api_key or not model:
+        raise ValueError('OpenAI configuration is missing')
+
+    url = f'{base_url}/chat/completions'
+    headers = {'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'}
+    user_prompt = f'''Answer the QA question below using only the provided context.
+
+Title: {title or 'Not provided'}
+Domain: {domain or 'General'}
+Story:
+{story or 'Not provided'}
+
+Acceptance Criteria:
+{acceptance_criteria or 'Not provided'}
+
+Question:
+{question}
+
+Rules:
+1. Keep the answer concise and useful for a QA engineer.
+2. If the context is insufficient, say what is missing instead of guessing.
+3. Use short paragraphs or bullets only when needed.
+'''
+    payload = {
+        'model': model,
+        'messages': [
+            {'role': 'system', 'content': 'You are QA Copilot, a concise QA assistant answering questions about a Jira story.'},
+            {'role': 'user', 'content': user_prompt},
+        ],
+        'temperature': 0.2,
+    }
+    response = requests.post(url, headers=headers, json=payload, timeout=60)
+    response.raise_for_status()
+    return response.json()['choices'][0]['message']['content'].strip()
+
+
 def generate_with_openai(title: str, story: str, acceptance_criteria: str, domain: str, baseline_package: QaPackage) -> QaPackage:
     api_key = os.getenv('OPENAI_API_KEY', '')
     model = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
