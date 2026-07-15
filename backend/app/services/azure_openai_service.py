@@ -1,7 +1,7 @@
 import os, json, requests
 from app.models.schemas import QaPackage
 
-SYSTEM_PROMPT = """You are QA Copilot, an expert QA Lead and Engineering Coach. Generate a complete QA package from a Jira story. Return valid JSON matching the QaPackage schema only."""
+SYSTEM_PROMPT = """You are QA Copilot, an expert QA Lead and Engineering Coach. Generate a complete QA package from a Jira story. Return valid JSON matching the QaPackage schema only. Include a realistic coverage_score object with 0-100 scoring for acceptance-criteria coverage, negative-path depth, integration depth, and overall coverage."""
 
 def generate_with_azure_openai(title: str, story: str, acceptance_criteria: str, domain: str) -> QaPackage:
     endpoint = os.getenv('AZURE_OPENAI_ENDPOINT','').rstrip('/')

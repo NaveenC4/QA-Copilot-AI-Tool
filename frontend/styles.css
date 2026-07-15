@@ -138,6 +138,13 @@ textarea:hover {
 	background: #ffffff;
 }
 
+input.field-error,
+textarea.field-error {
+	border-color: rgba(180, 35, 24, 0.88);
+	box-shadow: 0 0 0 4px rgba(180, 35, 24, 0.12);
+	background: #fff5f4;
+}
+
 input:focus,
 textarea:focus {
 	outline: none;
@@ -421,9 +428,48 @@ button.secondary {
 }
 
 .summary-section,
+.coverage-section,
 .risk-section,
 .code-section {
 	background: rgba(255, 255, 255, 0.05);
+}
+
+.coverage-grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.coverage-card {
+	display: grid;
+	gap: 6px;
+	padding: 14px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 14px;
+	background: rgba(10, 14, 22, 0.34);
+}
+
+.coverage-overall {
+	background: linear-gradient(135deg, rgba(15, 118, 110, 0.28), rgba(15, 118, 110, 0.1));
+	border-color: rgba(15, 118, 110, 0.35);
+}
+
+.coverage-label {
+	font-size: 0.78rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: #c6d0dc;
+}
+
+.coverage-card strong {
+	font-size: 1.35rem;
+	color: #ffffff;
+}
+
+.coverage-notes {
+	margin: 0;
+	color: #c6d0dc;
 }
 
 .output-list,
@@ -580,6 +626,10 @@ button.secondary {
 
 	.provider-row {
 		align-items: stretch;
+	}
+
+	.coverage-grid {
+		grid-template-columns: 1fr 1fr;
 	}
 
 	.ai-signal {

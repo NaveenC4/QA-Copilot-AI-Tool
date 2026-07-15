@@ -28,6 +28,14 @@ class AcceptanceCriterionCoverage(BaseModel):
     covered_by: List[str] = Field(default_factory=list)
     notes: str = ''
 
+
+class CoverageScore(BaseModel):
+    overall: int = Field(..., ge=0, le=100)
+    acceptance_criteria: int = Field(..., ge=0, le=100)
+    negative_paths: int = Field(..., ge=0, le=100)
+    integration: int = Field(..., ge=0, le=100)
+    notes: str = ''
+
 class QaPackage(BaseModel):
     requirement_summary: str
     functional_scenarios: List[str]
@@ -43,3 +51,4 @@ class QaPackage(BaseModel):
     assumptions: List[str] = Field(default_factory=list)
     open_questions: List[str] = Field(default_factory=list)
     acceptance_criteria_mapping: List[AcceptanceCriterionCoverage] = Field(default_factory=list)
+    coverage_score: CoverageScore

@@ -1,4 +1,4 @@
-from app.models.schemas import AcceptanceCriterionCoverage, QaPackage, TestCase, ApiScenario
+from app.models.schemas import AcceptanceCriterionCoverage, CoverageScore, QaPackage, TestCase, ApiScenario
 
 SECURITY_KEYWORDS = ['login','password','reset','authentication','account','user','email','token']
 PAYMENT_KEYWORDS = ['payment','card','transaction','refund','invoice']
@@ -7,6 +7,10 @@ API_KEYWORDS = ['api','endpoint','request','response','service','integration']
 def _has_any(text: str, words: list[str]) -> bool:
     t = text.lower()
     return any(w in t for w in words)
+
+
+def _clamp_score(value: int) -> int:
+    return max(0, min(100, value))
 
 def generate_local_package(title: str, story: str, acceptance_criteria: str = '', domain: str = 'General') -> QaPackage:
     full_text = f'''{title}\n{story}\n{acceptance_criteria}'''
@@ -127,6 +131,25 @@ test.describe('AI Generated QA Copilot Test Skeleton', () => {
             )
         )
 
+    if criteria_lines:
+        mapped_criteria = sum(1 for item in acceptance_mapping if item.covered_by)
+        acceptance_score = _clamp_score(round((mapped_criteria / len(criteria_lines)) * 100))
+    else:
+        acceptance_score = 58
+
+    negative_score = _clamp_score(48 + min(len(negative), 8) * 6 + (8 if is_security or is_payment else 0))
+    integration_score = 35
+    if api_coverage and api_coverage[0].endpoint != 'To be confirmed':
+        integration_score += 30
+    if any(test_case.type in ('Integration', 'Security') for test_case in test_cases):
+        integration_score += 20
+    if len(gaps) <= 5:
+        integration_score += 5
+    integration_score = _clamp_score(integration_score)
+    overall_score = _clamp_score(round((acceptance_score * 0.45) + (negative_score * 0.25) + (integration_score * 0.30)))
+
+    coverage_notes = 'Heuristic score based on acceptance-criteria traceability, negative-path breadth, and integration coverage depth. Recalibrate after exact workflows and endpoints are confirmed.'
+
     return QaPackage(
         requirement_summary='The requirement describes a user-facing capability that must be validated for happy path, negative path, boundary conditions, security, data validation, and integration behaviour.',
         functional_scenarios=functional,
@@ -142,4 +165,11 @@ test.describe('AI Generated QA Copilot Test Skeleton', () => {
         assumptions=assumptions,
         open_questions=open_questions,
         acceptance_criteria_mapping=acceptance_mapping,
+        coverage_score=CoverageScore(
+            overall=overall_score,
+            acceptance_criteria=acceptance_score,
+            negative_paths=negative_score,
+            integration=integration_score,
+            notes=coverage_notes,
+        ),
     )

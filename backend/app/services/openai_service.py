@@ -14,6 +14,7 @@ Rules:
 - Do not invent API endpoints, background systems, workflows, roles, or compliance rules unless they are explicitly stated.
 - If information is missing, add it to requirement_gaps, assumptions, or open_questions instead of guessing.
 - Make test cases specific and traceable to acceptance criteria where possible.
+- Return a coverage_score object with realistic 0-100 scoring for acceptance-criteria coverage, negative-path depth, integration depth, and overall coverage.
 - Preserve useful baseline content and improve precision, coverage, and prioritization.
 """
 
@@ -52,6 +53,7 @@ Refinement goals:
 3. Map acceptance criteria to relevant test cases.
 4. Avoid invented API endpoints. If no endpoint is specified, say so explicitly.
 5. Keep the output concise, grounded, and directly usable by a QA engineer.
+6. Calibrate coverage_score realistically and explain it briefly in coverage_score.notes.
 '''
     payload = {
         'model': model,
