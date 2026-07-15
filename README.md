@@ -41,6 +41,14 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+or
+```bash
+cd qa-copilot-ai-tool/backend
+pip install -U fastapi pydantic uvicorn
+python -m uvicorn app.main:app --reload
+
+```
+
 ## Run Frontend
 Open `frontend/index.html` in a browser or run:
 ```bash
