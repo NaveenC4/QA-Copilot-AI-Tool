@@ -258,6 +258,36 @@ button.secondary {
 	border-color: rgba(23, 92, 211, 0.2);
 }
 
+.model-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 6px 12px;
+	border-radius: 999px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	border: 1px solid transparent;
+	white-space: nowrap;
+}
+
+.model-badge-local {
+	color: #475467;
+	background: rgba(242, 244, 247, 0.95);
+	border-color: #d0d5dd;
+}
+
+.model-badge-openai {
+	color: #d7fff8;
+	background: rgba(15, 118, 110, 0.24);
+	border-color: rgba(15, 118, 110, 0.36);
+}
+
+.model-badge-azure {
+	color: #dbeafe;
+	background: rgba(23, 92, 211, 0.2);
+	border-color: rgba(23, 92, 211, 0.32);
+}
+
 .ai-signal {
 	display: grid;
 	gap: 2px;

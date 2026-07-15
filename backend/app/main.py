@@ -15,7 +15,13 @@ app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=True, 
 def get_runtime_config() -> dict:
     use_ai = os.getenv('USE_AI', 'false').lower() == 'true'
     provider = os.getenv('AI_PROVIDER', 'openai').lower() if use_ai else 'local'
-    return {'use_ai': use_ai, 'provider': provider}
+    model = ''
+    if use_ai:
+        if provider == 'openai':
+            model = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+        elif provider == 'azure':
+            model = os.getenv('AZURE_OPENAI_DEPLOYMENT', '')
+    return {'use_ai': use_ai, 'provider': provider, 'model': model}
 
 
 def generate_with_ai_provider(request: TicketRequest) -> QaPackage:
