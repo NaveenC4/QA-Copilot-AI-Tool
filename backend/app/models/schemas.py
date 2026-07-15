@@ -22,6 +22,12 @@ class ApiScenario(BaseModel):
     validation: str
     expected_status: str
 
+
+class AcceptanceCriterionCoverage(BaseModel):
+    criterion: str
+    covered_by: List[str] = Field(default_factory=list)
+    notes: str = ''
+
 class QaPackage(BaseModel):
     requirement_summary: str
     functional_scenarios: List[str]
@@ -34,3 +40,6 @@ class QaPackage(BaseModel):
     risk_reason: str
     playwright_skeleton: str
     business_impact: str
+    assumptions: List[str] = Field(default_factory=list)
+    open_questions: List[str] = Field(default_factory=list)
+    acceptance_criteria_mapping: List[AcceptanceCriterionCoverage] = Field(default_factory=list)

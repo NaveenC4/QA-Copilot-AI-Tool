@@ -1,0 +1,68 @@
+import json
+import os
+
+import requests
+
+from app.models.schemas import QaPackage
+
+SYSTEM_PROMPT = """You are QA Copilot, an expert QA Lead and Engineering Coach.
+
+You are refining a deterministic QA draft, not generating from scratch.
+Rules:
+- Return valid JSON matching the QaPackage schema only.
+- Keep every section grounded in the story, title, domain, acceptance criteria, and baseline draft.
+- Do not invent API endpoints, background systems, workflows, roles, or compliance rules unless they are explicitly stated.
+- If information is missing, add it to requirement_gaps, assumptions, or open_questions instead of guessing.
+- Make test cases specific and traceable to acceptance criteria where possible.
+- Preserve useful baseline content and improve precision, coverage, and prioritization.
+"""
+
+
+def _serialize_package(package: QaPackage) -> str:
+    if hasattr(package, 'model_dump_json'):
+        return package.model_dump_json(indent=2)
+    return package.json(indent=2)
+
+
+def generate_with_openai(title: str, story: str, acceptance_criteria: str, domain: str, baseline_package: QaPackage) -> QaPackage:
+    api_key = os.getenv('OPENAI_API_KEY', '')
+    model = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+    base_url = os.getenv('OPENAI_BASE_URL', 'https://api.openai.com/v1').rstrip('/')
+    if not api_key or not model:
+        raise ValueError('OpenAI configuration is missing')
+
+    url = f'{base_url}/chat/completions'
+    headers = {'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'}
+    user_prompt = f'''Refine the QA package below.
+
+Title: {title}
+Domain: {domain}
+Story:
+{story}
+
+Acceptance Criteria:
+{acceptance_criteria or 'Not provided'}
+
+Baseline QA Package JSON:
+{_serialize_package(baseline_package)}
+
+Refinement goals:
+1. Replace generic statements with scenario-specific QA coverage.
+2. Add concrete assumptions and open questions where the story is incomplete.
+3. Map acceptance criteria to relevant test cases.
+4. Avoid invented API endpoints. If no endpoint is specified, say so explicitly.
+5. Keep the output concise, grounded, and directly usable by a QA engineer.
+'''
+    payload = {
+        'model': model,
+        'messages': [
+            {'role': 'system', 'content': SYSTEM_PROMPT},
+            {'role': 'user', 'content': user_prompt},
+        ],
+        'temperature': 0.2,
+        'response_format': {'type': 'json_object'},
+    }
+    response = requests.post(url, headers=headers, json=payload, timeout=60)
+    response.raise_for_status()
+    content = response.json()['choices'][0]['message']['content']
+    return QaPackage(**json.loads(content))

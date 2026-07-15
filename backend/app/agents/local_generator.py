@@ -1,4 +1,4 @@
-from app.models.schemas import QaPackage, TestCase, ApiScenario
+from app.models.schemas import AcceptanceCriterionCoverage, QaPackage, TestCase, ApiScenario
 
 SECURITY_KEYWORDS = ['login','password','reset','authentication','account','user','email','token']
 PAYMENT_KEYWORDS = ['payment','card','transaction','refund','invoice']
@@ -13,6 +13,7 @@ def generate_local_package(title: str, story: str, acceptance_criteria: str = ''
     is_security = _has_any(full_text, SECURITY_KEYWORDS)
     is_payment = _has_any(full_text, PAYMENT_KEYWORDS)
     is_api = _has_any(full_text, API_KEYWORDS) or is_security or is_payment
+    criteria_lines = [line.strip() for line in acceptance_criteria.splitlines() if line.strip()]
 
     functional = [
         'Validate successful completion of the main user journey using valid input data.',
@@ -95,6 +96,37 @@ test.describe('AI Generated QA Copilot Test Skeleton', () => {
   });
 });"""
 
+    assumptions = [
+        'The story describes a single user journey rather than multiple variants.',
+        'Test data and environment access can be prepared by the QA team.',
+    ]
+    if is_security:
+        assumptions.append('The reset token is single-use and should not expose account existence.')
+
+    open_questions = [
+        'What are the exact validation rules and field formats?',
+        'Which user roles or permissions can access this capability?',
+        'What browsers, devices, and supported platforms are in scope?',
+    ]
+    if is_security:
+        open_questions += [
+            'What is the password policy for the new password?',
+            'Should password reset invalidate active sessions on other devices?',
+        ]
+
+    acceptance_mapping = []
+    for index, criterion in enumerate(criteria_lines, start=1):
+        covered_by = ['TC_001', 'TC_004'] if index <= 2 else ['TC_001']
+        if is_security and index >= 3:
+            covered_by.append('TC_005')
+        acceptance_mapping.append(
+            AcceptanceCriterionCoverage(
+                criterion=criterion,
+                covered_by=covered_by,
+                notes='Coverage should be refined once exact UI and API flows are confirmed.',
+            )
+        )
+
     return QaPackage(
         requirement_summary='The requirement describes a user-facing capability that must be validated for happy path, negative path, boundary conditions, security, data validation, and integration behaviour.',
         functional_scenarios=functional,
@@ -106,5 +138,8 @@ test.describe('AI Generated QA Copilot Test Skeleton', () => {
         risk_score=risk_score,
         risk_reason=risk_reason,
         playwright_skeleton=playwright,
-        business_impact='Estimated reduction of 60-90% in QA preparation effort by generating first-draft test assets in seconds.'
+        business_impact='Estimated reduction of 60-90% in QA preparation effort by generating first-draft test assets in seconds.',
+        assumptions=assumptions,
+        open_questions=open_questions,
+        acceptance_criteria_mapping=acceptance_mapping,
     )
