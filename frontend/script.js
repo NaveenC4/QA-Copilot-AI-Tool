@@ -1,4 +1,4 @@
-const BACKEND_URL=(window.QA_COPILOT_CONFIG&&window.QA_COPILOT_CONFIG.BACKEND_URL)||'http://127.0.0.1:8000';
+const BACKEND_URL='http://127.0.0.1:8000';
 const API_URL=`${BACKEND_URL}/generate`;
 const ASK_AI_API_URL=`${BACKEND_URL}/ask-ai`;
 const ATTACHMENT_API_URL=`${BACKEND_URL}/generate-with-attachment`;

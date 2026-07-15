@@ -29,7 +29,7 @@ User Story / Jira Ticket -> Requirement Analyzer -> Gap Detector -> Test Designe
 ## Tech Stack
 - Backend: Python FastAPI
 - Frontend: HTML, CSS, JavaScript
-- Optional AI Provider: Azure OpenAI / OpenAI-compatible endpoint
+- Optional AI Provider: Local LLM via Ollama / Azure OpenAI / OpenAI-compatible endpoint
 - Fallback Mode: Rule-based local generator for demo without API key
 
 ## Run Backend
@@ -60,68 +60,27 @@ cd frontend
 python -m http.server 3000
 ```
 
-## Free Deployment
-
-Recommended deployment for this repo:
-- Frontend: Cloudflare Pages
-- Backend: Hugging Face Spaces using Docker
-
-This is the path to use for this project.
-
-Detailed checklist:
-- `docs/deployment-checklist.md`
-
-### 1. Deploy Backend To Hugging Face Spaces
-
-This repo now includes a root `Dockerfile` for the FastAPI backend.
-
-Steps:
-1. Create a new Hugging Face Space
-2. Choose `Docker` as the Space SDK
-3. Push this repository to the Space
-4. Add your runtime secrets in the Space settings if you use AI providers:
-	 - `USE_AI`
-	 - `AI_PROVIDER`
-	 - `OPENAI_API_KEY`
-	 - `OPENAI_MODEL`
-	 - `OPENAI_BASE_URL`
-	 - `AZURE_OPENAI_ENDPOINT`
-	 - `AZURE_OPENAI_API_KEY`
-	 - `AZURE_OPENAI_DEPLOYMENT`
-	 - `AZURE_OPENAI_API_VERSION`
-
-Your backend URL will look like:
-
-```text
-https://your-space-name.hf.space
-```
-
-### 2. Deploy Frontend To Cloudflare Pages
-
-Deploy the `frontend` folder as a static site.
-
-Before deploying, update `frontend/config.js`:
-
-```js
-window.QA_COPILOT_CONFIG = {
-	BACKEND_URL: 'https://your-space-name.hf.space',
-};
-```
-
-Then deploy the `frontend` directory to Cloudflare Pages.
-
-### 3. Local Development Note
-
-For local development, keep `frontend/config.js` as:
-
-```js
-window.QA_COPILOT_CONFIG = {
-	BACKEND_URL: 'http://127.0.0.1:8000',
-};
-```
-
 ## Optional Azure OpenAI Setup
 Copy `backend/.env.example` to `backend/.env` and update values.
+
+## Local LLM Setup
+To use a local LLM instead of OpenAI, run Ollama locally and set these values in `backend/.env`:
+
+```env
+USE_AI=true
+AI_PROVIDER=ollama
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=llama3.1:8b
+```
+
+Then start or verify your local model, for example:
+
+```bash
+ollama serve
+ollama pull llama3.1:8b
+```
+
+If `AI_PROVIDER` is omitted while `USE_AI=true`, the backend now defaults to `ollama`.
 
 ## Hackathon Pitch
 QA Copilot is an Agentic AI assistant that transforms Jira stories into a complete QA package including test scenarios, negative testing, API coverage, risk assessment, requirement gaps, and automation recommendations in seconds, reducing QA preparation effort by up to 80-90% while improving sprint readiness and test coverage.
