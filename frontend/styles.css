@@ -138,6 +138,57 @@ textarea:hover {
 	background: #ffffff;
 }
 
+input[type="file"] {
+	padding: 12px;
+	background: rgba(255, 255, 255, 0.84);
+}
+
+.optional-pill {
+	display: inline-flex;
+	align-items: center;
+	margin-left: 8px;
+	padding: 3px 8px;
+	border-radius: 999px;
+	background: rgba(15, 118, 110, 0.12);
+	color: var(--primary-strong);
+	font-size: 0.72rem;
+	font-weight: 800;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+}
+
+.attachment-meta,
+.attachment-preview {
+	margin-top: 10px;
+	padding: 12px 14px;
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.72);
+	color: var(--text);
+}
+
+.attachment-meta {
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.attachment-meta-empty,
+.attachment-preview-empty,
+.attachment-preview-muted {
+	color: var(--muted);
+	background: rgba(255, 255, 255, 0.52);
+}
+
+.attachment-preview {
+	min-height: 112px;
+	max-height: 220px;
+	overflow: auto;
+	white-space: pre-wrap;
+	word-break: break-word;
+	font-size: 0.9rem;
+	line-height: 1.55;
+}
+
 input.field-error,
 textarea.field-error {
 	border-color: rgba(180, 35, 24, 0.88);

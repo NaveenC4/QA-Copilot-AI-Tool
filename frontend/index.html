@@ -1,1 +1,61 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>QA Copilot</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c5c4c'/%3E%3Cpath d='M18 34l9 9 19-22' fill='none' stroke='%23f5efe0' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"><link rel="stylesheet" href="styles.css"></head><body><header><div><h1>QA Copilot</h1><p>AI Powered Sprint Readiness Assistant for QA Teams</p></div><span class="badge">Hackathon Demo</span></header><main><section class="panel"><h2>Jira Story Input</h2><label>Ticket Title</label><input id="title" placeholder="Example: Customer Password Reset"><label>Domain</label><input id="domain" placeholder="Example: Insurance / Customer Portal"><label>User Story / Requirement</label><textarea id="story" placeholder="Example: As a customer, I want to reset my password so that I can regain access to my account."></textarea><label>Acceptance Criteria</label><textarea id="criteria" placeholder="Example:\n1. Customer can request password reset using registered email.\n2. System sends a reset link.\n3. Reset link expires after 15 minutes."></textarea><button id="generateBtn" onclick="generatePackage()">Generate QA Package</button><p class="hint">Enter your Jira story details or paste a requirement directly. Backend default: http://127.0.0.1:8000</p></section><section class="panel"><div class="output-header"><div><h2>Generated QA Package</h2><div class="provider-row"><div id="providerBadge" class="provider-badge provider-local">Provider: Local</div><div id="modelBadge" class="model-badge model-badge-local">Model: Local rules</div><div id="aiSignal" class="ai-signal ai-signal-local"><span class="ai-signal-label">Engine</span><strong id="aiSignalTitle">Local generator</strong><span id="aiSignalDetail">Rule-based fallback mode</span></div></div></div><button class="secondary" onclick="copyOutput()">Copy Output</button></div><div id="status" class="status">Ready</div><div id="output" class="output-placeholder output-empty">Generated QA package will appear here...</div></section></main><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>QA Copilot</title>
+	<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c5c4c'/%3E%3Cpath d='M18 34l9 9 19-22' fill='none' stroke='%23f5efe0' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header>
+		<div>
+			<h1>QA Copilot</h1>
+			<p>AI Powered Sprint Readiness Assistant for QA Teams</p>
+		</div>
+		<span class="badge">Hackathon Demo</span>
+	</header>
+	<main>
+		<section class="panel">
+			<h2>Jira Story Input</h2>
+			<label>Ticket Title</label>
+			<input id="title" placeholder="Example: Customer Password Reset">
+			<label>Domain</label>
+			<input id="domain" placeholder="Example: Insurance / Customer Portal">
+			<label>User Story / Requirement</label>
+			<textarea id="story" placeholder="Example: As a customer, I want to reset my password so that I can regain access to my account."></textarea>
+			<label>Acceptance Criteria</label>
+			<textarea id="criteria" placeholder="Example:
+1. Customer can request password reset using registered email.
+2. System sends a reset link.
+3. Reset link expires after 15 minutes."></textarea>
+			<label for="attachment">Attachment <span class="optional-pill">Optional</span></label>
+			<input id="attachment" type="file" accept=".txt,.md,.csv,.json,.pdf,.docx">
+			<div id="attachmentMeta" class="attachment-meta attachment-meta-empty">No attachment selected. You can generate with the form only.</div>
+			<div id="attachmentPreview" class="attachment-preview attachment-preview-empty">Select a TXT, MD, CSV, or JSON file to preview its contents here before generating.</div>
+			<button id="generateBtn" onclick="generatePackage()">Generate QA Package</button>
+			<p class="hint">Enter Jira story details, upload a supported attachment, or combine both. Supported attachments: TXT, MD, CSV, JSON, PDF, DOCX. Backend default: http://127.0.0.1:8000</p>
+		</section>
+		<section class="panel">
+			<div class="output-header">
+				<div>
+					<h2>Generated QA Package</h2>
+					<div class="provider-row">
+						<div id="providerBadge" class="provider-badge provider-local">Provider: Local</div>
+						<div id="modelBadge" class="model-badge model-badge-local">Model: Local rules</div>
+						<div id="aiSignal" class="ai-signal ai-signal-local">
+							<span class="ai-signal-label">Engine</span>
+							<strong id="aiSignalTitle">Local generator</strong>
+							<span id="aiSignalDetail">Rule-based fallback mode</span>
+						</div>
+					</div>
+				</div>
+				<button class="secondary" onclick="copyOutput()">Copy Output</button>
+			</div>
+			<div id="status" class="status">Ready</div>
+			<div id="output" class="output-placeholder output-empty">Generated QA package will appear here...</div>
+		</section>
+	</main>
+	<script src="script.js"></script>
+</body>
+</html>
