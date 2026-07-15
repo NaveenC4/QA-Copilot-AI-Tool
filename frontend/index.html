@@ -1,0 +1,7 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>QA Copilot</title><link rel="stylesheet" href="styles.css"></head><body><header><div><h1>QA Copilot</h1><p>AI Powered Sprint Readiness Assistant for QA Teams</p></div><span class="badge">Hackathon Demo</span></header><main><section class="panel"><h2>Jira Story Input</h2><label>Ticket Title</label><input id="title" value="Customer Password Reset"><label>Domain</label><input id="domain" value="Insurance / Customer Portal"><label>User Story / Requirement</label><textarea id="story">As a customer,
+I want to reset my password,
+so that I can regain access to my account.</textarea><label>Acceptance Criteria</label><textarea id="criteria">1. Customer can request password reset using registered email.
+2. System sends a reset link.
+3. Reset link expires after 15 minutes.
+4. Customer can create a new password following security rules.
+5. Customer sees an error for invalid or expired link.</textarea><button id="generateBtn" onclick="generatePackage()">Generate QA Package</button><p class="hint">Backend default: http://127.0.0.1:8000</p></section><section class="panel"><div class="output-header"><h2>Generated QA Package</h2><button class="secondary" onclick="copyOutput()">Copy Output</button></div><div id="status" class="status">Ready</div><div id="output" class="output-placeholder">Generated QA package will appear here...</div></section></main><script src="script.js"></script></body></html>
