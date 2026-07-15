@@ -33,20 +33,24 @@ User Story / Jira Ticket -> Requirement Analyzer -> Gap Detector -> Test Designe
 - Fallback Mode: Rule-based local generator for demo without API key
 
 ## Run Backend
+Windows easiest command:
+
+```bat
+run-backend.bat
+```
+
+Run it from the project root. It will:
+- create `backend/.venv` if missing
+- install `backend/requirements.txt`
+- start FastAPI on `http://127.0.0.1:8000`
+
+Manual fallback:
+
 ```bash
 cd backend
 python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
-
-or
-```bash
-cd qa-copilot-ai-tool/backend
-pip install -U fastapi pydantic uvicorn
-python -m uvicorn app.main:app --reload
-
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
 ## Run Frontend
