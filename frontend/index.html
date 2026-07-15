@@ -32,7 +32,10 @@
 			<label for="attachment">Attachment <span class="optional-pill">Optional</span></label>
 			<input id="attachment" type="file" accept=".txt,.md,.csv,.json,.pdf,.docx">
 			<div id="attachmentMeta" class="attachment-meta attachment-meta-empty">No attachment selected. You can generate with the form only.</div>
-			<div id="attachmentPreview" class="attachment-preview attachment-preview-empty">Select a TXT, MD, CSV, or JSON file to preview its contents here before generating.</div>
+			<div class="attachment-actions">
+				<button id="previewAttachmentBtn" class="secondary attachment-preview-trigger attachment-preview-trigger-hidden" type="button">Preview</button>
+				<button id="removeAttachmentBtn" class="secondary attachment-remove-trigger attachment-preview-trigger-hidden" type="button">Remove</button>
+			</div>
 			<button id="generateBtn" onclick="generatePackage()">Generate QA Package</button>
 			<p class="hint">Enter Jira story details, upload a supported attachment, or combine both. Supported attachments: TXT, MD, CSV, JSON, PDF, DOCX. Backend default: http://127.0.0.1:8000</p>
 		</section>
@@ -56,6 +59,16 @@
 			<div id="output" class="output-placeholder output-empty">Generated QA package will appear here...</div>
 		</section>
 	</main>
+	<div id="attachmentPreviewModal" class="preview-modal preview-modal-hidden" aria-hidden="true">
+		<div class="preview-modal-backdrop" data-close-preview="true"></div>
+		<div class="preview-modal-card" role="dialog" aria-modal="true" aria-labelledby="attachmentPreviewTitle">
+			<div class="preview-modal-header">
+				<h3 id="attachmentPreviewTitle">Attachment Preview</h3>
+				<button id="closePreviewBtn" class="preview-modal-close" type="button" aria-label="Close preview">Close</button>
+			</div>
+			<div id="attachmentPreviewBody" class="preview-modal-body">No attachment selected.</div>
+		</div>
+	</div>
 	<script src="script.js"></script>
 </body>
 </html>

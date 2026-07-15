@@ -83,3 +83,18 @@ def generate_with_attachment(
         acceptance_criteria=acceptance_criteria.strip() or parsed_criteria,
     )
     return build_qa_package(merged_request)
+
+
+@app.post('/preview-attachment')
+def preview_attachment(attachment: UploadFile = File(...)):
+    try:
+        attachment_text = extract_attachment_text(attachment)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+
+    preview_text = attachment_text.strip() or 'No readable text was found in this attachment.'
+    return {
+        'filename': attachment.filename or 'attachment',
+        'preview': preview_text[:12000],
+        'truncated': len(preview_text) > 12000,
+    }

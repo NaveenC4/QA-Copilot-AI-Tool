@@ -157,8 +157,7 @@ input[type="file"] {
 	text-transform: uppercase;
 }
 
-.attachment-meta,
-.attachment-preview {
+.attachment-meta {
 	margin-top: 10px;
 	padding: 12px 14px;
 	border: 1px solid var(--border);
@@ -172,21 +171,96 @@ input[type="file"] {
 	font-weight: 600;
 }
 
-.attachment-meta-empty,
-.attachment-preview-empty,
-.attachment-preview-muted {
+.attachment-meta-empty {
 	color: var(--muted);
 	background: rgba(255, 255, 255, 0.52);
 }
 
-.attachment-preview {
-	min-height: 112px;
-	max-height: 220px;
+.attachment-actions {
+	margin-top: 10px;
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.attachment-preview-trigger {
+	margin-top: 0;
+}
+
+.attachment-remove-trigger {
+	margin-top: 0;
+	background: linear-gradient(135deg, #6b7280, #4b5563);
+	box-shadow: 0 12px 24px rgba(75, 85, 99, 0.18);
+}
+
+.attachment-preview-trigger-hidden {
+	display: none;
+}
+
+.preview-modal {
+	position: fixed;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding: 24px;
+	z-index: 1000;
+}
+
+.preview-modal-hidden {
+	display: none;
+}
+
+.preview-modal-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(18, 26, 38, 0.58);
+	backdrop-filter: blur(6px);
+}
+
+.preview-modal-card {
+	position: relative;
+	width: min(820px, 100%);
+	max-height: min(78vh, 900px);
+	display: grid;
+	grid-template-rows: auto 1fr;
+	border-radius: 22px;
+	border: 1px solid rgba(255, 255, 255, 0.26);
+	background: linear-gradient(180deg, rgba(255, 253, 249, 0.98), rgba(245, 239, 228, 0.96));
+	box-shadow: 0 28px 70px rgba(18, 26, 38, 0.28);
+	overflow: hidden;
+}
+
+.preview-modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+	padding: 18px 20px;
+	border-bottom: 1px solid var(--border);
+	background: rgba(255, 255, 255, 0.68);
+}
+
+.preview-modal-header h3 {
+	margin: 0;
+	font-size: 1.05rem;
+	letter-spacing: -0.02em;
+}
+
+.preview-modal-close {
+	margin-top: 0;
+	padding: 10px 14px;
+	background: linear-gradient(135deg, #1d2939, #344054);
+	box-shadow: 0 12px 24px rgba(29, 41, 57, 0.18);
+}
+
+.preview-modal-body {
+	padding: 20px;
 	overflow: auto;
 	white-space: pre-wrap;
 	word-break: break-word;
-	font-size: 0.9rem;
-	line-height: 1.55;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: var(--text);
 }
 
 input.field-error,
