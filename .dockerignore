@@ -1,9 +1,0 @@
-.git
-.gitignore
-**/__pycache__/
-**/*.pyc
-backend/.venv
-backend/.env
-samples
-docs
-frontend
